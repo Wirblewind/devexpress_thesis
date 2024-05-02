@@ -5,7 +5,7 @@
   [showBorders]="false"
   [focusedRowEnabled]="true"
   [focusedRowIndex]="0"
-  [columnAutoWidth]="true"
+  [allowColumnResizing]="true"
   [columnHidingEnabled]="true">
 
   <dxo-paging [pageSize]="10"></dxo-paging>
@@ -13,25 +13,22 @@
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column
-    dataField="Task_ID"
-    [width]="90"
-    [hidingPriority]="2">
+    dataField="Task_Subject"
+    caption="Title">
   </dxi-column>
   <dxi-column
-    dataField="Task_Subject"
-    [width]="190"
-    caption="Subject"
-    [hidingPriority]="8">
+    dataField="Task_Due_Date"
+    caption="End Date"
+    dataType="date">
   </dxi-column>
   <dxi-column
     dataField="Task_Status"
-    caption="Status"
-    [hidingPriority]="6">
+    caption="Status">
   </dxi-column>
   <dxi-column
     dataField="Task_Priority"
     caption="Priority"
-    [hidingPriority]="5">
+    [hidingPriority]="1">
     <dxo-lookup
       [dataSource]="priority"
       valueExpr="value"
@@ -39,32 +36,15 @@
     </dxo-lookup>
   </dxi-column>
   <dxi-column
-    dataField="ResponsibleEmployee.Employee_Full_Name"
-    caption="Assigned To"
-    [allowSorting]="false"
-    [hidingPriority]="7">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Start_Date"
-    caption="Start Date"
-    dataType="date"
-    [hidingPriority]="3">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Due_Date"
-    caption="Due Date"
-    dataType="date"
-    [hidingPriority]="4">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Priority"
-    caption="Priority"
-    name="Priority"
-    [hidingPriority]="1">
-  </dxi-column>
-  <dxi-column
     dataField="Task_Completion"
-    caption="Completion"
-    [hidingPriority]="0">
+    caption="Progress">
   </dxi-column>
+
+  <dxo-editing
+      mode="popup"
+      [allowUpdating]="true"
+      [allowDeleting]="true"
+      [allowAdding]="true"
+      mode="row">
+  </dxo-editing>
 </dx-data-grid>

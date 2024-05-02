@@ -1,0 +1,32 @@
+{
+  "task-board-1": [
+    {
+        "Task_Subject": "Finalize project scope",
+        "Task_Status": "Active",
+        "Task_Priority": 2,
+        "Task_Due_Date": "2023-04-15",
+        "Task_Completion": "25%"
+    },
+    {
+        "Task_Subject": "Define preliminary resources",
+        "Task_Status": "Pending",
+        "Task_Priority": 3,
+        "Task_Due_Date": "2023-04-20",
+        "Task_Completion": "15%"
+    },
+    {
+        "Task_Subject": "Select technology stack",
+        "Task_Status": "Completed",
+        "Task_Priority": 1,
+        "Task_Due_Date": "2023-04-10",
+        "Task_Completion": "100%"
+    },
+    {
+        "Task_Subject": "Finalize hardware specifications",
+        "Task_Status": "Delayed",
+        "Task_Priority": 2,
+        "Task_Due_Date": "2023-04-18",
+        "Task_Completion": "40%"
+    }
+  ]
+}
