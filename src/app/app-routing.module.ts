@@ -39,6 +39,12 @@ const routes: Routes = [
     canActivate: [ AuthGuardService ]
   },
   {
+    path: 'boards',
+    children: [
+      {path: ":id", component: TasksComponent}
+    ]
+  },
+  {
     path: 'change-password/:recoveryCode',
     component: ChangePasswordFormComponent,
     canActivate: [ AuthGuardService ]

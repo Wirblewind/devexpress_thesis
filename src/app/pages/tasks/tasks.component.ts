@@ -4,24 +4,27 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import 'devextreme/data/odata/store';
 import { lastValueFrom } from 'rxjs';
-import { DataService } from 'src/app/shared/services';
+import { BoardService } from 'src/app/shared/services';
 
 @Component({
   templateUrl: 'tasks.component.html'
 })
 
 export class TasksComponent {
-  // dataSource: any;
   priority: any[];
-  tasks: any[] = [];
   dataSource: CustomStore;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private boardService: BoardService) {
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
       
       load: () => {
+        return this.boardService.boards$.subscribe(boards => {
+          boards.map(board => ({
+            tasks: board.tasks
+          }));
+        });
         return lastValueFrom(this.httpClient.get('http://localhost:3000/task-board-1/'));
       },
       insert: (values) => {

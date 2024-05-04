@@ -1,32 +1,56 @@
 {
-  "task-board-1": [
+  "boards": [
     {
-        "Task_Subject": "Finalize project scope",
-        "Task_Status": "Active",
-        "Task_Priority": 2,
-        "Task_Due_Date": "2023-04-15",
-        "Task_Completion": "25%"
+      "id": "1",
+      "name": "Development Board",
+      "tasks": [
+        {
+          "id": "1",
+          "subject": "Finalize project scope",
+          "status": "Active",
+          "priority": 2,
+          "dueDate": "2023-04-15",
+          "completion": "25%"
+        },
+        {
+          "id": "2",
+          "subject": "Define preliminary resources",
+          "status": "Pending",
+          "priority": 3,
+          "dueDate": "2023-04-20",
+          "completion": "15%"
+        },
+        {
+          "id": "3",
+          "subject": "Select technology stack",
+          "status": "Completed",
+          "priority": 1,
+          "dueDate": "2023-04-10",
+          "completion": "100%"
+        },
+        {
+          "id": "4",
+          "subject": "Finalize hardware specifications",
+          "status": "Delayed",
+          "priority": 2,
+          "dueDate": "2023-04-18",
+          "completion": "40%"
+        }
+      ]
     },
     {
-        "Task_Subject": "Define preliminary resources",
-        "Task_Status": "Pending",
-        "Task_Priority": 3,
-        "Task_Due_Date": "2023-04-20",
-        "Task_Completion": "15%"
-    },
-    {
-        "Task_Subject": "Select technology stack",
-        "Task_Status": "Completed",
-        "Task_Priority": 1,
-        "Task_Due_Date": "2023-04-10",
-        "Task_Completion": "100%"
-    },
-    {
-        "Task_Subject": "Finalize hardware specifications",
-        "Task_Status": "Delayed",
-        "Task_Priority": 2,
-        "Task_Due_Date": "2023-04-18",
-        "Task_Completion": "40%"
+      "id": "2",
+      "name": "Marketing Board",
+      "tasks": [
+        {
+          "id": "1",
+          "subject": "Launch new campaign",
+          "status": "Active",
+          "priority": 1,
+          "dueDate": "2023-05-01",
+          "completion": "50%"
+        }
+      ]
     }
   ]
 }
