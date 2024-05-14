@@ -1,33 +1,38 @@
 import { Component, NgModule, Output, Input, EventEmitter, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { DxTreeViewModule, DxTreeViewComponent, DxTreeViewTypes } from 'devextreme-angular/ui/tree-view';
-import { navigation } from '../../../app-navigation';  // Import des Navigationsarrays
-import * as events from 'devextreme/events';  // Import von DevExtreme Events
+import * as events from 'devextreme/events';
 import { BoardService } from '../../services';
 import { Router } from '@angular/router';
+import { DxButtonModule, DxMenuModule, DxPopupModule, DxTextBoxComponent, DxTextBoxModule } from 'devextreme-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { DxoLabelModule } from 'devextreme-angular/ui/nested';
 
 @Component({
-  selector: 'app-side-navigation-menu',  // CSS-Selektor, der diese Komponente in einem Template identifiziert
-  templateUrl: './side-navigation-menu.component.html',  // Pfad zur HTML-Template-Datei
-  styleUrls: ['./side-navigation-menu.component.scss']  // Pfad zur SCSS-Stylesheet-Datei
+  selector: 'app-side-navigation-menu',
+  templateUrl: './side-navigation-menu.component.html',
+  styleUrls: ['./side-navigation-menu.component.scss']
 })
 export class SideNavigationMenuComponent implements AfterViewInit, OnDestroy {
   @ViewChild(DxTreeViewComponent, { static: true })
-  menu!: DxTreeViewComponent;  // Zugriff auf die DevExtreme TreeView-Komponente im Template
+  menu!: DxTreeViewComponent;
 
   @Output()
-  selectedItemChanged = new EventEmitter<DxTreeViewTypes.ItemClickEvent>();  // Event, das ausgelöst wird, wenn ein Item ausgewählt wird
+  selectedItemChanged = new EventEmitter<DxTreeViewTypes.ItemClickEvent>();
 
   @Output()
-  openMenu = new EventEmitter<any>();  // Event, das ausgelöst wird, wenn das Menü geöffnet wird
+  openMenu = new EventEmitter<any>();
+
+  isAddingBoard: boolean;
+  @ViewChild('boardTitleTextBox', {static: false}) boardTitleTextBox!: DxTextBoxComponent;
 
   private _selectedItem!: String;
   @Input()
-  set selectedItem(value: String) {  // Setter für das aktuell ausgewählte Item
+  set selectedItem(value: String) {
     this._selectedItem = value;
     if (!this.menu.instance) {
       return;
     }
-    this.menu.instance.selectItem(value);  // Selektiert das Item in der TreeView
+    this.menu.instance.selectItem(value);
   }
 
   private _items!: Record <string, unknown>[];
@@ -37,25 +42,24 @@ export class SideNavigationMenuComponent implements AfterViewInit, OnDestroy {
 
   private _compactMode = false;
   @Input()
-  get compactMode() {  // Getter für den Compact-Modus
+  get compactMode() {
     return this._compactMode;
   }
-  set compactMode(val) {  // Setter für den Compact-Modus
+  set compactMode(val) {
     this._compactMode = val;
     if (!this.menu.instance) {
       return;
     }
     if (val) {
-      this.menu.instance.collapseAll();  // Klappt alle Elemente zusammen, wenn Compact-Modus aktiv ist
+      this.menu.instance.collapseAll();
     } else {
-      this.menu.instance.expandItem(this._selectedItem);  // Erweitert das ausgewählte Item
+      this.menu.instance.expandItem(this._selectedItem);
     }
   }
 
-  constructor(private elementRef: ElementRef, private boardService: BoardService, private router: Router) { }  // Konstruktor mit ElementRef-Dependency-Injection
-
-  // boardNames: string[] = [];
-  // @Input() private boardNames: Record <string, unknown>[] = [];
+  constructor(private elementRef: ElementRef, private boardService: BoardService, private router: Router) {
+    this.isAddingBoard = false;
+  }
 
   private _boardItem: {
     text: string;
@@ -65,12 +69,11 @@ export class SideNavigationMenuComponent implements AfterViewInit, OnDestroy {
   } | undefined;
 
   ngOnInit(): void {
-    // this.loadBoards();
     this.boardService.boards$.subscribe(boards => {
       this._items = boards.map(board => ({
         text: board.name,
         path: `/boards/${board.id}`,
-        icon: 'folder'  // Anpassen, falls notwendig
+        icon: 'folder'
       }));
       if (this.menu.instance) {
         this.menu.instance.option('items', this.items);
@@ -79,10 +82,7 @@ export class SideNavigationMenuComponent implements AfterViewInit, OnDestroy {
   }
 
   onItemClick(event: DxTreeViewTypes.ItemClickEvent) {
-    console.log("onclick")
-    console.log(event)
     this.menu.instance.selectItem(event.itemData);
-    // this.selectedItemChanged.emit(event);  // Löst das selectedItemChanged Event aus
     if (event.itemData && event.itemData["path"]) {
       this.router.navigate([event.itemData["path"]]);
   }
@@ -90,18 +90,37 @@ export class SideNavigationMenuComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     events.on(this.elementRef.nativeElement, 'dxclick', (e: Event) => {
-      this.openMenu.next(e);  // Löst das openMenu Event aus, wenn auf das Element geklickt wird
+      this.openMenu.next(e);
     });
   }
 
   ngOnDestroy() {
-    events.off(this.elementRef.nativeElement, 'dxclick');  // Entfernt den Event-Listener beim Zerstören der Komponente
+    events.off(this.elementRef.nativeElement, 'dxclick');
   }
+
+  public startAddingBoard(): void {
+    this.isAddingBoard = true;
+  }
+
+  public onBlurIsAddingBoardSet(): void {
+    this.boardTitleTextBox.value = '';
+    this.isAddingBoard = false;
+  }
+
+  public async createNewBoard(): Promise<void> {
+    await this.boardService.createBoard({name: this.boardTitleTextBox.value}).subscribe()
+    this.isAddingBoard = false;
+  }
+
+  public onHomeClick(event: any):void {
+    this.router.navigate(['/home'])
+  }
+
 }
 
 @NgModule({
-  imports: [ DxTreeViewModule ],  // Import des DevExtreme TreeView Moduls
-  declarations: [ SideNavigationMenuComponent ],  // Deklaration der Komponente im Modul
-  exports: [ SideNavigationMenuComponent ]  // Export der Komponente für die Verwendung in anderen Teilen der Anwendung
+  imports: [ DxTreeViewModule, DxButtonModule, DxPopupModule, DxTextBoxModule, BrowserModule, DxMenuModule ],
+  declarations: [ SideNavigationMenuComponent ],
+  exports: [ SideNavigationMenuComponent ]
 })
 export class SideNavigationMenuModule { }

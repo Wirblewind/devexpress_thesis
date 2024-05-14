@@ -1,6 +1,19 @@
-<ng-content></ng-content>
+<!-- <ng-content></ng-content> -->
 
 <div class="menu-container">
+
+  <dx-menu class="home-menu"
+    (onItemClick)="onHomeClick($event)">
+    <dxi-item class="home-button"
+      icon="home"
+      text="Home">
+    </dxi-item>
+  </dx-menu>
+
+  <div class="board-text">
+      <p>Your Boards</p>
+  </div>
+
   <dx-tree-view
     [items]="items"
     keyExpr="path"
@@ -10,4 +23,19 @@
     (onItemClick)="onItemClick($event)"
     width="100%">
   </dx-tree-view>
+
+  <div class="new-board-div">
+    <dx-button class="new-board-button" *ngIf="!isAddingBoard"
+      text="Add new Board"
+      stylingMode="contained"
+      type="normal"
+      (onClick)="startAddingBoard()"
+    ></dx-button>
+
+    <dx-text-box #boardTitleTextBox
+    *ngIf="isAddingBoard"
+    (onBlur)="onBlurIsAddingBoardSet()"
+    (onEnterKey)="createNewBoard()">
+    </dx-text-box>
+  </div>
 </div>

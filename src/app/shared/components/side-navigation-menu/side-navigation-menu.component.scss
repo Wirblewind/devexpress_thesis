@@ -9,9 +9,43 @@
   width: 250px !important;
 
   .menu-container {
+    flex-direction: column;
     min-height: 100%;
     display: flex;
     flex: 1;
+
+    .new-board-div{
+      width: 250px !important;
+      padding: 5px;
+    }
+
+    .new-board-button{
+      padding: 5px;
+      width: 100%;
+    }
+
+    .board-text{
+      border-top: 3px solid #dedbdb;
+      border-bottom: 1px solid #dedbdb;
+      padding-left: 15px;
+    }
+
+    .dx-button{
+      min-height: 50px;
+    }
+
+    .home-menu {
+      min-height: 50px;
+      color: white;
+      width: 250px;
+
+    }
+
+    .home-button {
+      background-color: black;
+      width: 250px;
+      color: white;
+    }
 
     ::ng-deep .dx-treeview {
       // ## Long text positioning
@@ -29,7 +63,7 @@
         }
       }
       // ##
-      
+
       // ## Arrow customization
       .dx-treeview-node {
         padding: 0 0 !important;
@@ -52,7 +86,7 @@
           font-weight: bold;
           border-bottom: 1px solid $base-border-color;
         }
-  
+
         &[aria-level='2'] .dx-treeview-item-content {
           font-weight: normal;
           padding: 0 $side-panel-min-width;

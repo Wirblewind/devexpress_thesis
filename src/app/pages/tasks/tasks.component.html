@@ -1,6 +1,33 @@
-<h2 class="content-block">Tasks</h2>
+<div class="title-and-button-container">
 
-<dx-data-grid class="dx-card wide-card"
+  <h2 class="task-title"
+  *ngIf="!isEditingTitle"
+  (click)="startEditingTitle()">
+  Tasks Board: {{ boardTitle }}
+  </h2>
+
+  <dx-text-box #boardTitleTextBox
+    *ngIf="isEditingTitle"
+    value="{{boardTitle}}"
+    (onEnterKey)="saveEditedTitle()"
+    (onBlur)="onBlurIsAddingBoardSet()">
+  </dx-text-box>
+
+  <div class="delete-button-container">
+    <dx-button class="delete-button" icon="trash" (onClick)="deleteBoard()"></dx-button>
+  </div>
+</div>
+
+<dx-select-box class="select-box"
+  [dataSource]="items"
+  valueExpr="ID"
+  displayExpr="Name"
+  [value]="items[0].ID"
+  (onValueChanged)="onSelectBoxChanged($event)">
+</dx-select-box>
+
+
+<dx-data-grid #grid class="dx-card wide-card" *ngIf="!isDashboardMode"
   [dataSource]="dataSource"
   [showBorders]="false"
   [focusedRowEnabled]="true"
@@ -13,22 +40,26 @@
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column
-    dataField="Task_Subject"
+    dataField="subject"
     caption="Title">
   </dxi-column>
   <dxi-column
-    dataField="Task_Due_Date"
+    dataField="dueDate"
     caption="End Date"
     dataType="date">
   </dxi-column>
   <dxi-column
-    dataField="Task_Status"
+    dataField="status"
     caption="Status">
+    <dxo-lookup
+      [dataSource]="statusDataSource"
+      valueExpr="value"
+      displayExpr="name">
+    </dxo-lookup>
   </dxi-column>
   <dxi-column
-    dataField="Task_Priority"
-    caption="Priority"
-    [hidingPriority]="1">
+    dataField="priority"
+    caption="Priority">
     <dxo-lookup
       [dataSource]="priority"
       valueExpr="value"
@@ -36,8 +67,9 @@
     </dxo-lookup>
   </dxi-column>
   <dxi-column
-    dataField="Task_Completion"
-    caption="Progress">
+    dataField="completion"
+    caption="Progress"
+    [format]="{ type: 'percent', precision: 0 }">
   </dxi-column>
 
   <dxo-editing
@@ -48,3 +80,53 @@
       mode="row">
   </dxo-editing>
 </dx-data-grid>
+
+<div class="overview-dashboard" *ngIf="isDashboardMode">
+  <div class="chart-container">
+    <div class="pie-chart">
+      <dx-pie-chart
+        id="priority-pie-chart"
+        title="Priority Pie Chart"
+        palette="bright"
+        [dataSource]="priorityData">
+        <dxi-series argumentField="name" valueField="value">
+          <dxo-label [visible]="true">
+            <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+        <dxo-export [enabled]="true"></dxo-export>
+      </dx-pie-chart>
+    </div>
+
+    <div class="pie-chart">
+      <dx-pie-chart
+        id="status-pie-chart"
+        title="Status Doughnut Chart"
+        palette="Soft Pastel"
+        type="doughnut"
+        [dataSource]="statusData">
+        <dxi-series argumentField="name" valueField="value">
+          <dxo-label [visible]="true">
+            <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+        <dxo-export [enabled]="true"></dxo-export>
+      </dx-pie-chart>
+    </div>
+  </div>
+
+  <div class="bar-chart">
+    <dx-chart
+      id="due-date-bar-chart"
+      title="Due Date Bar Chart"
+      [dataSource]="dueDateData">
+      <dxi-series
+        argumentField="date"
+        valueField="count"
+        name="Due Dates"
+        type="bar"
+        color="#ffaa66">
+      </dxi-series>
+    </dx-chart>
+  </div>
+</div>

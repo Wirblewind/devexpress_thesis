@@ -5,7 +5,12 @@ import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
-import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
+import { DxButtonComponent, DxButtonModule, DxChartModule, DxDataGridModule, DxFormModule, DxLoadPanelModule, DxPieChartModule, DxScrollViewModule, DxSelectBoxModule, DxTextAreaModule, DxTextBoxModule } from 'devextreme-angular';
+import dxTextArea from 'devextreme/ui/text_area';
+import { BrowserModule } from '@angular/platform-browser';
+import dxSelectBox from 'devextreme/ui/select_box';
+import dxScrollView from 'devextreme/ui/scroll_view';
+import dxPieChart from 'devextreme/viz/pie_chart';
 
 const routes: Routes = [
   {
@@ -56,7 +61,18 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule],
+  imports: [RouterModule.forRoot(routes, { useHash: true }),
+    DxDataGridModule,
+    DxFormModule,
+    DxTextBoxModule,
+    BrowserModule,
+    DxButtonModule,
+    DxSelectBoxModule,
+    DxScrollViewModule,
+    DxLoadPanelModule,
+    DxPieChartModule,
+    DxChartModule
+  ],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [

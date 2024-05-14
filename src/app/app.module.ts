@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { SideNavOuterToolbarModule, SideNavInnerToolbarModule, SingleCardModule } from './layouts';
-import { FooterModule, ResetPasswordFormModule, CreateAccountFormModule, ChangePasswordFormModule, LoginFormModule } from './shared/components';
+import { FooterModule, ResetPasswordFormModule, CreateAccountFormModule, ChangePasswordFormModule, LoginFormModule, SideNavigationMenuModule } from './shared/components';
 import { AuthService, ScreenService, AppInfoService } from './shared/services';
 import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { DxPopupModule, DxTextAreaModule } from 'devextreme-angular';
+import dxTextArea from 'devextreme/ui/text_area';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { HttpClientModule } from '@angular/common/http';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    DxPopupModule,
+    DxTextAreaModule
   ],
   providers: [
     AuthService,
